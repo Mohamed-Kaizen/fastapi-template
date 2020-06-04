@@ -1,0 +1,69 @@
+site_name: {{ cookiecutter.project_name }}
+site_url: {{ cookiecutter.domain_name }}
+site_author: {{ cookiecutter.author_name }}
+site_description: >-
+  {{ cookiecutter.description }}
+
+repo_name: {{ cookiecutter.github_username }}/{{ cookiecutter.project_name|lower|replace(' ', '-')|replace('_', '-') }}
+repo_url: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name|lower|replace(' ', '-')|replace('_', '-') }}/
+edit_uri: ''
+
+copyright: Copyright &copy; 2020 {{ cookiecutter.author_name }}
+
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/github-alt
+  features:
+    - tabs
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+  - git-revision-date-localized:
+      type: timeago
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: true
+      watch:
+        - src/{{ cookiecutter.project_slug }}
+
+nav:
+  - Home: 'index.md'
+  - Reference:
+      - Main: "reference/main.md"
+      - Manage: "reference/manage.md"
+      - Settings: "reference/settings.md"
+      - Shortcuts: "reference/shortcuts.md"
+      - Users:
+          - Base: "reference/users/base.md"
+          - Models: "reference/users/models.md"
+          - Utils: "reference/users/utils.md"
+
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      linenums: true
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+          - name: mermaid
+            class: mermaid
+            format: !!python/name:pymdownx.superfences.fence_div_format
+  - pymdownx.tabbed
+
+
+extra_css:
+    - 'css/termynal.css'
+    - 'css/custom.css'
+
+extra_javascript:
+    - 'https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js'
+    - 'js/termynal.js'
+    - 'js/custom.js'

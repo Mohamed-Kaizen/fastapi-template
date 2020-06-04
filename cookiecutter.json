@@ -1,0 +1,34 @@
+{
+  "project_name": "Awesome FastAPI Project",
+  "project_slug": "{{ cookiecutter.project_name|lower|replace(' ', '_')|replace('-', '_') }}",
+  "description": "Behold {{ cookiecutter.project_name}} Project",
+  "version": "0.1.0",
+  "author_name": "Mohamed Nesredin",
+  "email": "{{ cookiecutter.author_name|lower|replace(' ', '-') }}@example.com",
+  "github_username": "{{ cookiecutter.author_name|lower|replace(' ', '') }}",
+  "domain_name": "example.com",
+  "docs_tool": [
+    "mkdocs",
+    "none"
+  ],
+  "license": [
+    "MIT",
+    "BSD-3",
+    "GPLv3",
+    "Apache Software License 2.0",
+    "ISCL",
+    "Mozilla Public License 2.0"
+  ],
+  "_copy_without_render": [
+        "*.html",
+        "*.js",
+        "*.css",
+        "*.jsx",
+        "*.svelte",
+        "*.ts",
+        "*.tsx",
+        ".github",
+        "*.vue"
+  ]
+
+}
