@@ -1,5 +1,5 @@
 site_name: {{ cookiecutter.project_name }}
-site_url: {{ cookiecutter.domain_name }}
+site_url: https://{{ cookiecutter.domain_name }}
 site_author: {{ cookiecutter.author_name }}
 site_description: >-
   {{ cookiecutter.description }}
@@ -41,8 +41,13 @@ nav:
       - Shortcuts: "reference/shortcuts.md"
       - Users:
           - Base: "reference/users/base.md"
+          - Depends: "reference/users/depends.md"
+          - Middleware: "reference/users/middleware.md"
           - Models: "reference/users/models.md"
+          - PWNED: "reference/users/pwned.md"
+          - Schema: "reference/users/schema.md"
           - Utils: "reference/users/utils.md"
+          - Validators: "reference/users/validators.md"
 
 
 markdown_extensions:

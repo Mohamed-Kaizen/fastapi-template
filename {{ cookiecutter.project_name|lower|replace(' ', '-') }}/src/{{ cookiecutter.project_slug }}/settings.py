@@ -3,6 +3,7 @@ import pathlib
 import sys
 from typing import List
 
+from fastapi.security import OAuth2PasswordBearer
 from loguru import logger
 from passlib.context import CryptContext
 from pydantic import BaseSettings
@@ -43,6 +44,10 @@ class Settings(BaseSettings):
 
     User_MODEL: str = "{{ cookiecutter.project_slug }}.users.models.User"
 
+    SECRET_KEY: str
+
+    JWT_ALGORITHM: str = "HS256"
+
     class Config:
         """Base Config for Settings."""
 
@@ -52,3 +57,7 @@ class Settings(BaseSettings):
 settings = Settings()
 
 logger.add(sys.stderr, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}")
+
+OAUTH2_SCHEME = OAuth2PasswordBearer(tokenUrl="/users/login/")
+
+PASSWORD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
