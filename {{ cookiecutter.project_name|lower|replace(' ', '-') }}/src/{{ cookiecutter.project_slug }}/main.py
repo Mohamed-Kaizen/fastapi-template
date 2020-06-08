@@ -5,6 +5,8 @@ from tortoise.contrib.fastapi import register_tortoise
 
 from . import __version__
 from .settings import settings
+from .users import views as users_views
+from .users.middleware import AuthJWTMiddleware
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -22,11 +24,14 @@ app.add_middleware(
     allow_methods=settings.CORS_ALLOW_METHODS,
     allow_headers=settings.CORS_ALLOW_HEADERS,
 )
+app.add_middleware(AuthJWTMiddleware)
 
 register_tortoise(
     app,
     db_url=settings.DATABASE_URL,
     modules={"models": settings.DB_MODELS},
-    generate_schemas=settings.DEBUG,
+    generate_schemas=True,
     add_exception_handlers=True,
 )
+
+app.include_router(users_views.router, prefix="/users")
