@@ -38,7 +38,7 @@ flake8-import-order = "^0.18.1"
 isort = {extras = ["pyproject"], version = "^4.3.21"}
 mkdocs = "^1.1.2"
 mkdocs-material = "^5.2.3"
-mkdocstrings = "^0.11.2"
+mkdocstrings = "^0.11.3"
 mkdocs-minify-plugin = "^0.3.0"
 mkdocs-git-revision-date-localized-plugin = "^0.5.2"
 mypy = "^0.770"
@@ -48,6 +48,8 @@ pytype = {version = "^2020.5.13", python = "3.7"}
 safety = "^1.9.0"
 typeguard = "^2.9.1"
 xdoctest = "^0.12.0"
+asynctest = "^0.13.0"
+pytest-dotenv = "^0.5.1"
 
 [tool.poetry.scripts]
 {{ cookiecutter.project_name|lower|replace(' ', '-')|replace('_', '-') }} = "{{ cookiecutter.project_slug }}.manage:app"

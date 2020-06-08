@@ -102,7 +102,13 @@ def tests(session: Session) -> None:
     args = session.posargs or ["--xdoctest", "--cov"]
     session.run("poetry", "install", "--no-dev", external=True)
     install_with_constraints(
-        session, "coverage[toml]", "pytest", "pytest-cov", "xdoctest"
+        session,
+        "coverage[toml]",
+        "pytest",
+        "pytest-cov",
+        "xdoctest",
+        "asynctest",
+        "pytest-dotenv",
     )
     session.run("pytest", *args)
 
@@ -112,7 +118,9 @@ def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     args = session.posargs
     session.run("poetry", "install", "--no-dev", external=True)
-    install_with_constraints(session, "pytest", "typeguard")
+    install_with_constraints(
+        session, "pytest", "typeguard", "asynctest", "pytest-dotenv"
+    )
     session.run("pytest", f"--typeguard-packages={package}", *args)
 
 
