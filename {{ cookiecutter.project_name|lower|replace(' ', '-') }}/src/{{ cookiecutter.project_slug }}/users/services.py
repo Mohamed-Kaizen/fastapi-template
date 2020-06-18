@@ -1,5 +1,5 @@
 """Collection of services."""
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 import pendulum
 
@@ -34,4 +34,19 @@ async def update_last_login(*, user: User) -> None:
         user: user model
     """
     user.last_login = pendulum.now()
+    await user.save()
+
+
+async def create_user(*, data: Dict) -> None:
+    """Create new user.
+
+    Args:
+        data: Dict of new user info.
+    """
+    password = data.pop("password")
+
+    user = User(**data)
+
+    user.set_password(plain_password=password)
+
     await user.save()

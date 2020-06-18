@@ -28,8 +28,8 @@ def event_loop(client: TestClient) -> Generator:
 
 async def create_user() -> None:
     """Creating user for test."""
-    user = User(username="mohamed", email="q@e.com")
-    password = "1234567899mnm"
+    user = User(username="{{ cookiecutter.project_slug }}", email="{{ cookiecutter.project_slug }}@{{ cookiecutter.project_slug }}.com")
+    password = "@Sdf5fg7hj458h"
     user.set_password(plain_password=password)
     await user.save()
 
@@ -39,7 +39,7 @@ def test_login(client: TestClient, event_loop: asyncio.AbstractEventLoop) -> Non
     event_loop.run_until_complete(create_user())
     headers = {"Content-type": "application/x-www-form-urlencoded"}
     response = client.post(
-        "/users/login/", data="username=mohamed&password=1234567899mnm", headers=headers
+        "/users/login/", data="username={{ cookiecutter.project_slug }}&password=@Sdf5fg7hj458h", headers=headers
     )
     assert response.status_code == 200
 
@@ -51,7 +51,7 @@ def test_login_incorrect_password(
     event_loop.run_until_complete(create_user())
     headers = {"Content-type": "application/x-www-form-urlencoded"}
     response = client.post(
-        "/users/login/", data="username=mohamed&password=1234567899mn", headers=headers
+        "/users/login/", data="username={{ cookiecutter.project_slug }}&password=1234567899mn", headers=headers
     )
     assert response.status_code == 401
 
@@ -62,6 +62,32 @@ def test_login_incorrect(
     """It exits with a status code of 401."""
     headers = {"Content-type": "application/x-www-form-urlencoded"}
     response = client.post(
-        "/users/login/", data="username=mohamed&password=1234567899mnm", headers=headers
+        "/users/login/", data="username={{ cookiecutter.project_slug }}&password=@Sdf5fg7hj458h", headers=headers
     )
     assert response.status_code == 401
+
+
+def test_sign_up_as_success(client: TestClient) -> None:
+    """It exits with a status code of 201."""
+    headers = {"Content-type": "application/json"}
+    data = {
+        "username": "{{ cookiecutter.project_slug }}",
+        "password": "@Sdf5fg7hj458h",
+        "email": "{{ cookiecutter.project_slug }}@{{ cookiecutter.project_slug }}.com",
+    }
+    response = client.post("/users/", json=data, headers=headers)
+
+    assert response.json() == {"detail": "user has been created"}
+    assert response.status_code == 201
+
+
+def test_sign_up_fail(client: TestClient) -> None:
+    """It exits with a status code of 422."""
+    data = {
+        "username": "admin",
+        "password": "123456admin",
+        "email": "admin@admin.com",
+    }
+    response = client.post("/users/", json=data)
+
+    assert response.status_code == 422
