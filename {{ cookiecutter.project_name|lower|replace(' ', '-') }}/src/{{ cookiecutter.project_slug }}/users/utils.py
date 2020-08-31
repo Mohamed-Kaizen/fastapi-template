@@ -1,9 +1,8 @@
 """Collection of utils."""
 from typing import Optional
 
-import jwt
 import pendulum
-from jwt import PyJWTError
+from jose import JWTError, jwt
 
 from {{ cookiecutter.project_slug }}.settings import PASSWORD_CONTEXT, logger, settings
 
@@ -49,7 +48,7 @@ def verify_password(*, plain_password: str, hashed_password: str) -> bool:
     return PASSWORD_CONTEXT.verify(plain_password, hashed_password)
 
 
-def create_access_token(*, data: dict, expires_in_minutes: int) -> bytes:
+def create_access_token(*, data: dict, expires_in_minutes: int) -> str:
     """Create access token.
 
     Args:
@@ -62,7 +61,7 @@ def create_access_token(*, data: dict, expires_in_minutes: int) -> bytes:
         >>> token = utils.create_access_token(data=data, expires_in_minutes=5)
         >>> len(token) > 0
         True
-        >>> type(token) == bytes
+        >>> type(token) == str
         True
 
     Returns:
@@ -73,11 +72,11 @@ def create_access_token(*, data: dict, expires_in_minutes: int) -> bytes:
     data.update({"exp": expire})
 
     return jwt.encode(
-        payload=data, key=settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM
+        claims=data, key=settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM
     )
 
 
-def verified_token(*, token: bytes) -> Optional[TokenData]:
+def verified_token(*, token: str) -> Optional[TokenData]:
     """Verfiy token.
 
     Args:
@@ -97,7 +96,7 @@ def verified_token(*, token: bytes) -> Optional[TokenData]:
     """
     try:
         payload = jwt.decode(
-            jwt=token,
+            token=token,
             key=settings.SECRET_KEY,
             algorithms=settings.JWT_ALGORITHM,
             verify=True,
@@ -107,7 +106,7 @@ def verified_token(*, token: bytes) -> Optional[TokenData]:
             username=payload.get("sub"), exp=payload.get("exp"), id=payload.get("id"),
         )
 
-    except PyJWTError as error:
+    except JWTError as error:
         logger.error(error)
         return None
 
