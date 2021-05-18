@@ -6,7 +6,7 @@ import nox
 from nox.sessions import Session
 
 package = "{{ cookiecutter.project_slug }}"
-nox.options.sessions = "lint", "safety", "mypy", "pytype", "tests", "typeguard"
+nox.options.sessions = "lint", "safety", "mypy", "tests", "typeguard"
 locations = "src", "tests", "noxfile.py"
 
 
@@ -45,7 +45,7 @@ def black(session: Session) -> None:
     session.run("black", *args)
 
 
-@nox.session(python=["3.8", "3.7"])
+@nox.session(python=["3.9", "3.8"])
 def lint(session: Session) -> None:
     """Lint using flake8."""
     args = session.posargs or locations
@@ -80,7 +80,7 @@ def safety(session: Session) -> None:
         session.run("safety", "check", f"--file={requirements.name}", "--full-report")
 
 
-@nox.session(python=["3.8", "3.7"])
+@nox.session(python=["3.9", "3.8"])
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or locations
@@ -88,15 +88,7 @@ def mypy(session: Session) -> None:
     session.run("mypy", *args)
 
 
-@nox.session(python="3.7")
-def pytype(session: Session) -> None:
-    """Type-check using pytype."""
-    args = session.posargs or ["--disable=import-error", *locations]
-    install_with_constraints(session, "pytype")
-    session.run("pytype", *args)
-
-
-@nox.session(python=["3.8", "3.7"])
+@nox.session(python=["3.9", "3.8"])
 def tests(session: Session) -> None:
     """Run the test suite."""
     args = session.posargs or ["--xdoctest", "--cov"]
@@ -113,7 +105,7 @@ def tests(session: Session) -> None:
     session.run("pytest", *args)
 
 
-@nox.session(python=["3.8", "3.7"])
+@nox.session(python=["3.9", "3.8"])
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     args = session.posargs
@@ -137,7 +129,7 @@ def xdoctest(session: Session) -> None:
 def coverage(session: Session) -> None:
     """Upload coverage data."""
     install_with_constraints(session, "coverage[toml]", "codecov")
-    session.run("coverage", "xml", "--fail-under=84")
+    session.run("coverage", "xml", "--fail-under=85")
     session.run("codecov", *session.posargs)
 
 
@@ -151,7 +143,7 @@ def docs(session: Session) -> None:
         "mkdocs-material",
         "mkdocstrings",
         "mkdocs-minify-plugin",
-        "mkdocs",
         "mkdocs-git-revision-date-localized-plugin",
+        "mkdocs-git-authors-plugin",
     )
     session.run("mkdocs", "build")

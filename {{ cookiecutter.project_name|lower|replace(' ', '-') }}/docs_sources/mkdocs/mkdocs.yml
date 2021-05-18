@@ -6,19 +6,46 @@ site_description: >-
 
 repo_name: {{ cookiecutter.github_username }}/{{ cookiecutter.project_name|lower|replace(' ', '-')|replace('_', '-') }}
 repo_url: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name|lower|replace(' ', '-')|replace('_', '-') }}/
-edit_uri: ''
+edit_uri: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name|lower|replace(' ', '-')|replace('_', '-') }}/tree/master/docs
 
-copyright: Copyright &copy; 2020 {{ cookiecutter.author_name }}
+copyright: Copyright &copy; 2021 {{ cookiecutter.author_name }}
 
 theme:
   name: material
+  custom_dir: docs/overrides
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
   icon:
     repo: fontawesome/brands/github-alt
   features:
-    - tabs
+    - search.suggest
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.instant # common this if you don't want SPA mode
+
+
+# google_analytics:
+#   - UA-XXXXXXXX-X
+#   - auto
+
 
 plugins:
   - search
+  - git-authors:
+      show_contribution: true
+      show_line_count: true
+      count_empty_lines: true
   - minify:
       minify_html: true
   - git-revision-date-localized:
@@ -34,34 +61,47 @@ plugins:
 
 nav:
   - Home: 'index.md'
-  - Reference:
-      - Main: "reference/main.md"
-      - Manage: "reference/manage.md"
-      - Settings: "reference/settings.md"
-      - Shortcuts: "reference/shortcuts.md"
+  - API:
+      - Main: "api/main.md"
+      - Manage: "api/manage.md"
+      - Settings: "api/settings.md"
+      - Shortcuts: "api/shortcuts.md"
       - Users:
-          - Base: "reference/users/base.md"
-          - Depends: "reference/users/depends.md"
-          - Middleware: "reference/users/middleware.md"
-          - Models: "reference/users/models.md"
-          - PWNED: "reference/users/pwned.md"
-          - Schema: "reference/users/schema.md"
-          - Utils: "reference/users/utils.md"
-          - Validators: "reference/users/validators.md"
+          - Base: "api/users/base.md"
+          - Depends: "api/users/depends.md"
+          - Middleware: "api/users/middleware.md"
+          - Models: "api/users/models.md"
+          - PWNED: "api/users/pwned.md"
+          - Schema: "api/users/schema.md"
+          - Utils: "api/users/utils.md"
+          - Validators: "api/users/validators.md"
 
 
 markdown_extensions:
+  - meta
+  - abbr
+  - pymdownx.snippets
   - admonition
-  - codehilite:
-      linenums: true
-  - toc:
-      permalink: true
-  - pymdownx.superfences:
-      custom_fences:
-          - name: mermaid
-            class: mermaid
-            format: !!python/name:pymdownx.superfences.fence_div_format
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.snippets
   - pymdownx.tabbed
+  - footnotes
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.smartsymbols
+  - attr_list
+  - def_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
 
 
 extra_css:
